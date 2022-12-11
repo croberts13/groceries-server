@@ -21,7 +21,7 @@ curl --header "Content-Type: application/json" \
   http://localhost:8080/api/groceries/{id}  
 
 
- # Update item
+ # delete item
 curl --header "Content-Type: application/json" \
   --request DELETE \
-  http://localhost:8080/api/groceries/6395544d3178899dbc302598   
+  http://localhost:8080/api/groceries/{replace with id obtained from get curl example}   
