@@ -3,6 +3,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const productRouter = require("./routes/product");
 const GroceryRouter = require("./routes/grocery");
@@ -22,6 +23,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(cors());
 app.use("/product", productRouter);
 app.use("/api/groceries", GroceryRouter);
 

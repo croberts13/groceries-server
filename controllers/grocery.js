@@ -11,12 +11,7 @@ exports.grocery_create = function (req, res) {
     quantity: req.body.quantity,
   });
 
-  product.save(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.send("Product Created successfully");
-  });
+  product.save().then(async () => res.send(await Grocery.find()));
 };
 
 exports.grocery_details = function (req, res) {
@@ -27,19 +22,14 @@ exports.grocery_details = function (req, res) {
 };
 
 exports.grocery_update = function (req, res) {
-  Grocery.findByIdAndUpdate(
-    req.params.id,
-    { $set: req.body },
-    function (err, product) {
-      if (err) return next(err);
-      res.send("Product udpated.");
-    }
-  );
+  Grocery.findByIdAndUpdate(req.params.id, { $set: req.body })
+    .then(async () => res.send(await Grocery.find()))
+    .catch(() => res.send("failed", 304));
 };
 
 exports.grocery_delete = function (req, res) {
-  Grocery.findByIdAndRemove(req.params.id, function (err) {
+  const item = Grocery.findByIdAndRemove(req.params.id, async function (err) {
     if (err) return next(err);
-    res.send("Deleted successfully!");
+    res.send(await Grocery.find());
   });
 };
