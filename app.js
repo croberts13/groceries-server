@@ -1,10 +1,11 @@
 // app.js
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
-const productRouter = require('./routes/product');
+const productRouter = require("./routes/product");
+const GroceryRouter = require("./routes/grocery");
 
 const app = express();
 
@@ -12,22 +13,23 @@ const app = express();
 
 const mongoDB = process.env.MONGODB_URI;
 
-mongoose.connect(mongoDB);
+mongoose.connect(mongoDB || "mongodb://localhost:27017/groceries");
 mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/product', productRouter);
+app.use("/product", productRouter);
+app.use("/api/groceries", GroceryRouter);
 
-const port = 3001;
+const port = 8080;
 
-db.once('open', function() {
-    console.log('Connected!');
-    app.listen(port, () => {
-        console.log('Server is up and running on port numner ' + port);
-    });
+db.once("open", function () {
+  console.log("Connected!");
+  app.listen(port, () => {
+    console.log("Server is up and running on port numner " + port);
+  });
 });
